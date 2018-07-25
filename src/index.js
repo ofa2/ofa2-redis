@@ -1,13 +1,14 @@
+import _ from 'lodash';
 import Redis from 'ioredis';
 
 export default function lift() {
-  this.config.redis = this.config.redis || {};
+  let config = _.get(this.config, 'connections.redis', {});
 
-  if (this.config.redis.cluster) {
-    this.redis = new Redis.Cluster(this.config.redis);
+  if (config.cluster) {
+    this.redis = new Redis.Cluster(config);
   }
   else {
-    this.redis = new Redis(this.config.redis);
+    this.redis = new Redis(config);
   }
 
   return null;
